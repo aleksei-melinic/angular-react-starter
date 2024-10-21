@@ -17,10 +17,15 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: Parse Node.js version and Pass it as an environment variable
-              uses: svierk/get-node-version@v1.2.0
+            - name: Parse Node.js version from package-lock.json
+              run: |
+                  VERSION=$(jq -r '.packages[] | .engines?.node? // empty' package-lock.json | sort -V | tail -n 1 | sed 's/||.*//')
+                  echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
               with:
-                  path: ./angular/
+                  node-version: ${{ env.VERSION }}
 
             - name: Install packages
               run: npm install
