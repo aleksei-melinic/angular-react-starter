@@ -6,16 +6,9 @@ on:
             - master
             - ci-feature
 
-permissions:
-    contents: read
-    packages: write
-    actions: read
-
 jobs:
     test-and-build:
         runs-on: ubuntu-latest
-        permissions:
-            packages: write
         defaults:
             run:
                 working-directory: angular
@@ -54,7 +47,7 @@ jobs:
               with:
                   registry: ghcr.io
                   username: ${{ github.actor }}
-                  password: ${{ secrets.GITHUB_TOKEN }}
+                  password: ${{ github.token }}
 
             - name: Build and push Docker image
               uses: docker/build-push-action@v2
