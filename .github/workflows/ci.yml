@@ -17,10 +17,8 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v2
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20.15.0
+            - name: Parse Node.js version and Pass it as an environment variable
+              uses: svierk/get-node-version@v1.2.0
 
             - name: Install packages
               run: npm install
