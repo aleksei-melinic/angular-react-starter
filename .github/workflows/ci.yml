@@ -1,12 +1,12 @@
 name: CI Pipeline
 
 on:
-    push:
-        branches:
-            - master
-            - ci-feature
+    # push:
+    #     branches:
+    #         - master
+    #         - ci-feature
 
-    workflow_call:
+    workflow_dispatch:
         inputs:
             registry:
                 description: Remote registry to push the Docker image to
