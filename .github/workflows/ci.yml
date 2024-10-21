@@ -1,11 +1,6 @@
 name: CI Pipeline
 
 on:
-    # push:
-    #     branches:
-    #         - master
-    #         - ci-feature
-
     workflow_dispatch:
         inputs:
             registry:
@@ -72,12 +67,18 @@ jobs:
                   username: ${{ github.actor }}
                   password: ${{ github.token }}
 
+            - name: Preparing Docker tags
+              id: meta
+              uses: docker/metadata-action@v4
+              with:
+                  images: ${{ inputs.registry }}/${{ secrets.GHUB_REPOSITORY }}
+
             - name: Build and push Docker image
               uses: docker/build-push-action@v2
               with:
                   context: .
                   push: true
-                  tags: ${{ inputs.registry }}/${{ secrets.GHUB_REPOSITORY }}:${{ inputs.tag }}
+                  tags: ${{ steps.meta.outputs.tags }}
 
             - name: Calculate Steps Log Time
               if: always()
