@@ -19,6 +19,8 @@ jobs:
 
             - name: Parse Node.js version and Pass it as an environment variable
               uses: svierk/get-node-version@v1.2.0
+              with:
+                  path: ./angular
 
             - name: Install packages
               run: npm install
