@@ -4,10 +4,15 @@ on:
     push:
         branches:
             - master
+            - ci-feature
 
 jobs:
     test-and-build:
         runs-on: ubuntu-latest
+
+        defaults:
+            run:
+                working-directory: angular
 
         steps:
             # Bonus: STEAP 1 - Record time of job forund here - https://stackoverflow.com/a/72175840
@@ -26,21 +31,17 @@ jobs:
 
             - name: Install packages
               run: npm install
-              working-directory: angular
 
             - name: Lint code
               run: npm run lint
-              working-directory: angular
 
             - name: Run tests
               # No need for "continue-on-error: false" as it is Github Actions default
               run: npm run coverage # "1.0.4" - npm run coverage would open browser so added "browsers": "ChromeHeadless" TO angular.json
-              working-directory: angular
 
             - name: Build
               if: success()
               run: npm run build
-              working-directory: angular
 
             # Github Packages explanation https://youtu.be/t3xRLAA_Y7Y
             # Example of docker/setup-buildx-action https://dev.to/ken_mwaura1/automate-docker-image-builds-and-push-to-github-registry-using-github-actions-4h20
