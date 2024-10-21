@@ -6,7 +6,7 @@ on:
             - master
             - ci-feature
 
-    workflow_dispatch:
+    workflow_call:
         inputs:
             registry:
                 description: Remote registry to push the Docker image to
