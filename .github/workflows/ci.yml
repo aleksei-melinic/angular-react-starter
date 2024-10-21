@@ -28,7 +28,7 @@ jobs:
                   node-version: ${{ env.VERSION }}
 
             - name: Install packages
-              run: npm install
+              run: npm ci
 
             - name: Lint code
               run: npm run lint
