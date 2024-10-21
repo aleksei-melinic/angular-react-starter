@@ -1,5 +1,5 @@
 services:
     web:
-        image: "ghcr.io/amexei/angular-react-starter:latest"
+        image: "ghcr.io/amexei/angular-react-starter:ci-feature"
         ports:
             - "8080:80"
