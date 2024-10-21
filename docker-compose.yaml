@@ -1,8 +1,5 @@
-name: angular-web-task2
-
 services:
     web:
         image: "ghcr.io/amexei/angular-react-starter:lastest"
         ports:
             - "8080:80"
-        command: nginx -g "daemon off;"
