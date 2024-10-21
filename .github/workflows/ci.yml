@@ -5,6 +5,10 @@ on:
         branches:
             - master
             - ci-feature
+permissions:
+    contents: read
+    packages: write
+    actions: read
 
 jobs:
     test-and-build:
