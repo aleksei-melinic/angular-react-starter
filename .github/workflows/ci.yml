@@ -32,7 +32,7 @@ jobs:
 
             - name: Parse Node.js version from package-lock.json
               run: |
-                  VERSION=$(jq '.version' package.json)
+                  VERSION=$(jq -r '.version' package.json)
                   echo "VERSION=$VERSION" >> $GITHUB_ENV
 
             - name: Setup Node.js
