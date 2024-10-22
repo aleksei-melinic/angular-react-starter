@@ -8,7 +8,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY ./nginx.conf  /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 8080
 
 RUN chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /var/log/nginx && \
