@@ -39,7 +39,7 @@ jobs:
               id: meta
               uses: docker/metadata-action@v4
               with:
-                  images: ${{ inputs.registry }}/${{ secrets.GHUB_REPOSITORY }}
+                  images: ${{ inputs.registry }}/${{ inputs.ghub_repository }}
 
             - name: Build and push Docker image
               uses: docker/build-push-action@v2
@@ -54,3 +54,6 @@ jobs:
               uses: RockyIsHere/actions-calculate-log-time@v0.2.4
               env:
                   GITHUB_TOKEN: ${{ github.token }}
+
+            - name: Print duration
+              run: echo ${{ steps.duration.outputs.duration }}
