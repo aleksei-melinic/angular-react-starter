@@ -6,22 +6,17 @@ on:
             registry:
                 description: Remote registry to push the Docker image to
                 default: ghcr.io
-                required: true
-                type: string
-            tag:
-                description: Tag to use for the Docker image for the remote registry
-                default: latest
-                required: true
+                required: false
                 type: string
             smtp_address:
                 description: SMTP server to send email notifications
                 default: smtp.gmail.com
-                required: true
+                required: false
                 type: string
             smtp_port:
                 description: SMTP server port
                 default: 587
-                required: true
+                required: false
                 type: number
 
 jobs:
