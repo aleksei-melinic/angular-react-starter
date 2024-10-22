@@ -18,6 +18,14 @@ on:
                 default: 587
                 required: false
                 type: number
+            mail_to:
+                description: Email address to send notifications to
+                required: true
+                type: string
+            mail_from:
+                description: Email address to send notifications from
+                required: true
+                type: string
 
 jobs:
     test-and-build:
@@ -38,8 +46,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version-file: angular/package.json
-                  # node-version: ${{ env.VERSION }}
+                  node-version: ${{ env.VERSION }}
 
             - name: Install packages
               run: npm ci
@@ -83,10 +90,6 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ github.token }}
 
-            - name: Print Calculated Time
-              run: |
-                  echo "Calculated Time: ${{ steps.duration.outputs.duration }}"
-
             - name: Send email notification on workflow status
               if: always()
               uses: dawidd6/action-send-mail@v3
@@ -97,8 +100,8 @@ jobs:
                   password: ${{ secrets.SMTP_PASSWORD }}
                   subject: ${{ github.repository }} ${{ github.workflow }} ${{ job.status }}
                   priority: high
-                  to: ${{ secrets.MAIL_TO }}
-                  from: ${{ secrets.MAIL_FROM }}
+                  to: ${{ inputs.mail_to }}
+                  from: ${{ inputs.mail_from }}
                   convert_markdown: true
                   html_body: |
                       ### testing-code ${{ job.status }}
