@@ -45,8 +45,12 @@ jobs:
 
     build-push-docker:
         needs: test-and-build
+        uses: ./.github/workflows/build-push-docker.yml
+
+    send-mail:
+        needs: [test-and-build, build-push-docker]
         uses:
-            ./.github/workflows/build-push-docker.yml
+            ./.github/workflows/send-mail.yml
 
             # - name: Calculate Steps Log Time
             #   if: always()

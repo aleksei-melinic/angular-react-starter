@@ -8,6 +8,11 @@ on:
                 default: ghcr.io
                 required: false
                 type: string
+            ghub_repository:
+                description: GitHub repository to push the Docker image to
+                default: amexei/angular-react-starter
+                required: false
+                type: string
 
 jobs:
     build-push-docker:
@@ -42,3 +47,10 @@ jobs:
                   context: .
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
+
+            - name: Calculate Steps Log Time
+              if: always()
+              id: duration
+              uses: RockyIsHere/actions-calculate-log-time@v0.2.4
+              env:
+                  GITHUB_TOKEN: ${{ github.token }}
