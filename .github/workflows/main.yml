@@ -43,7 +43,12 @@ jobs:
             - name: Build
               run: npm run build
 
-            - name: Using `build-push-docker.yml` workflow
+    build-push-docker:
+        needs: test-and-build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Using "build-push-docker.yml" workflow
               uses: ./.github/workflows/build-push-docker.yml
 
             - name: Calculate Steps Log Time
@@ -53,10 +58,10 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ github.token }}
 
-            - name: Send email with `send-mail.yml`
-              uses: ./.github/workflows/send-mail.yml
-              with:
-                  duration: ${{ steps.duration.outputs.duration }}
-              env:
-                  SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-                  SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+              # - name: Send email with `send-mail.yml`
+              #   uses: ./.github/workflows/send-mail.yml
+              #   with:
+              #       duration: ${{ steps.duration.outputs.duration }}
+              #   env:
+              #       SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+              #       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
