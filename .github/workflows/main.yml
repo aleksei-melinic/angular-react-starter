@@ -47,22 +47,22 @@ jobs:
         needs: test-and-build
         uses: ./.github/workflows/build-push-docker.yml
 
-    send-mail:
-        needs: [test-and-build, build-push-docker]
-        uses:
-            ./.github/workflows/send-mail.yml
+    # send-mail:
+    #     needs: [test-and-build, build-push-docker]
+    #     uses:
+    #         ./.github/workflows/send-mail.yml
 
-            # - name: Calculate Steps Log Time
-            #   if: always()
-            #   id: duration
-            #   uses: RockyIsHere/actions-calculate-log-time@v0.2.4
-            #   env:
-            #       GITHUB_TOKEN: ${{ github.token }}
+    # - name: Calculate Steps Log Time
+    #   if: always()
+    #   id: duration
+    #   uses: RockyIsHere/actions-calculate-log-time@v0.2.4
+    #   env:
+    #       GITHUB_TOKEN: ${{ github.token }}
 
-            # - name: Send email with `send-mail.yml`
-            #   uses: ./.github/workflows/send-mail.yml
-            #   with:
-            #       duration: ${{ steps.duration.outputs.duration }}
-            #   env:
-            #       SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-            #       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+    # - name: Send email with `send-mail.yml`
+    #   uses: ./.github/workflows/send-mail.yml
+    #   with:
+    #       duration: ${{ steps.duration.outputs.duration }}
+    #   env:
+    #       SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+    #       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
