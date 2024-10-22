@@ -6,9 +6,9 @@ on:
             - master
             - ci-feature
 
-    pull_request:
-        branches:
-            - master
+    # pull_request:
+    #     branches:
+    #         - master
 
 jobs:
     test-and-build:
@@ -45,23 +45,20 @@ jobs:
 
     build-push-docker:
         needs: test-and-build
-        runs-on: ubuntu-latest
+        uses:
+            ./.github/workflows/build-push-docker.yml
 
-        steps:
-            - name: Using "build-push-docker.yml" workflow
-              uses: ./.github/workflows/build-push-docker.yml
+            # - name: Calculate Steps Log Time
+            #   if: always()
+            #   id: duration
+            #   uses: RockyIsHere/actions-calculate-log-time@v0.2.4
+            #   env:
+            #       GITHUB_TOKEN: ${{ github.token }}
 
-            - name: Calculate Steps Log Time
-              if: always()
-              id: duration
-              uses: RockyIsHere/actions-calculate-log-time@v0.2.4
-              env:
-                  GITHUB_TOKEN: ${{ github.token }}
-
-              # - name: Send email with `send-mail.yml`
-              #   uses: ./.github/workflows/send-mail.yml
-              #   with:
-              #       duration: ${{ steps.duration.outputs.duration }}
-              #   env:
-              #       SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-              #       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+            # - name: Send email with `send-mail.yml`
+            #   uses: ./.github/workflows/send-mail.yml
+            #   with:
+            #       duration: ${{ steps.duration.outputs.duration }}
+            #   env:
+            #       SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+            #       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
