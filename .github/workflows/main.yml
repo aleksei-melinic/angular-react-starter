@@ -1,0 +1,62 @@
+name: CI Pipeline
+
+on:
+    push:
+        branches:
+            - master
+            - ci-feature
+
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    test-and-build:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: angular
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Parse Node.js version from package-lock.json
+              run: |
+                  VERSION=$(jq -r '.version' package.json)
+                  echo "VERSION=^$VERSION" >> $GITHUB_ENV
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.VERSION }}
+
+            - name: Install packages
+              run: npm ci
+
+            - name: Lint code
+              run: npm run lint
+
+            - name: Run tests
+              run: npm run coverage -- --browsers=ChromeHeadless
+
+            - name: Build
+              run: npm run build
+
+            - name: Using `build-push-docker.yml` workflow
+              uses: ./.github/workflows/build-push-docker.yml
+
+            - name: Calculate Steps Log Time
+              if: always()
+              id: duration
+              uses: RockyIsHere/actions-calculate-log-time@v0.2.4
+              env:
+                  GITHUB_TOKEN: ${{ github.token }}
+
+            - name: Send email with `send-mail.yml`
+              uses: ./.github/workflows/send-mail.yml
+              with:
+                  duration: ${{ steps.duration.outputs.duration }}
+              env:
+                  SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+                  SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}

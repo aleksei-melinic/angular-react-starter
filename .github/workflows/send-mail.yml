@@ -1,0 +1,63 @@
+name: Send email notification
+
+on:
+    workflow_call:
+        inputs:
+            smtp_address:
+                description: SMTP server to send email notifications
+                default: smtp.gmail.com
+                required: false
+                type: string
+            smtp_port:
+                description: SMTP server port
+                default: 587
+                required: false
+                type: number
+            mail_to:
+                description: Email address to send notifications to
+                required: true
+                type: string
+            mail_from:
+                description: Email address to send notifications from
+                required: true
+                type: string
+            duration:
+                description: Duration of the workflow
+                required: true
+                type: string
+
+        secrets:
+            smtp_username:
+                description: SMTP username
+                required: true
+            smtp_password:
+                description: SMTP password
+                required: true
+
+jobs:
+    send-mail:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Send email notification on workflow status
+              if: always()
+              uses: dawidd6/action-send-mail@v3
+              with:
+                  server_address: ${{ inputs.smtp_address }}
+                  server_port: ${{ inputs.smtp_port }}
+                  username: ${{ secrets.SMTP_USERNAME }}
+                  password: ${{ secrets.SMTP_PASSWORD }}
+                  subject: ${{ github.repository }} ${{ github.workflow }} ${{ job.status }}
+                  priority: high
+                  to: ${{ inputs.mail_to }}
+                  from: ${{ inputs.mail_from }}
+                  convert_markdown: true
+                  html_body: |
+                      ### testing-code ${{ job.status }}
+
+                      *Duration*: ${{ steps.duration.outputs.duration }}
+
+                      ${{ github.repository }}: [${{ github.ref }}@${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/actions)
