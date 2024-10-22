@@ -109,7 +109,7 @@ jobs:
                   server_address: ${{ inputs.smtp_address }}
                   server_port: ${{ inputs.smtp_port }}
                   username: ${{ secrets.smtp_username }}
-                  password: ${{ secrets.smptp_password }}
+                  password: ${{ secrets.smtp_password }}
                   subject: ${{ github.repository }} ${{ github.workflow }} ${{ job.status }}
                   priority: high
                   to: ${{ inputs.mail_to }}
