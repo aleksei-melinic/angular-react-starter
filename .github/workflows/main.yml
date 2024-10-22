@@ -43,6 +43,12 @@ jobs:
             - name: Build
               run: npm run build
 
+            - name: Upload build artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: angular-dist
+                  path: dist/angular-starter
+
     build-push-docker:
         needs: test-and-build
         uses: ./.github/workflows/build-push-docker.yml

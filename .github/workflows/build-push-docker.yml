@@ -25,6 +25,12 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4
 
+            - name: Download build artifacts
+              uses: actions/download-artifact@v3
+              with:
+                  name: angular-dist
+                  path: dist/angular-starter
+
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
@@ -56,4 +62,5 @@ jobs:
                   GITHUB_TOKEN: ${{ github.token }}
 
             - name: Print duration
+              if: always()
               run: echo ${{ steps.duration.outputs.duration }}
