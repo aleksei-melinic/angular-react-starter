@@ -4,10 +4,12 @@ on:
     push:
         branches:
             - ci-feature
+            - master
 
     pull_request:
         branches:
             - master
+        types: opened
 
 jobs:
     commit-trigger:
