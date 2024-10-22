@@ -1,5 +1,8 @@
 services:
     web:
-        image: "ghcr.io/amexei/angular-react-starter:ci-feature"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        # image: "ghcr.io/amexei/angular-react-starter:ci-feature"
         ports:
             - "8080:8080"
