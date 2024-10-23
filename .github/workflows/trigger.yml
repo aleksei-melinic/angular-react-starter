@@ -1,26 +1,21 @@
+---
 name: CI Pipeline
-
 on:
-    push:
-        branches:
-            - ci-feature
-            - master
-
-    pull_request:
-        branches:
-            - master
-        types: opened
-
+  push:
+    branches: [ci-feature, master]
+  pull_request:
+    branches: [master]
+    types: opened
 jobs:
-    commit-trigger:
-        uses: ./.github/workflows/reusable-upload-package.yml
-        with:
-            registry: ghcr.io
-            smtp_address: smtp.gmail.com
-            smtp_port: 587
-            mail_to: aleksei.melinic@gmail.com
-            mail_from: aleksei.melinic@gmail.com
-            ghub_repository: amexei/angular-react-starter
-        secrets:
-            smtp_username: ${{ secrets.SMTP_USERNAME }}
-            smtp_password: ${{ secrets.SMTP_PASSWORD }}
+  push-trigger:
+    uses: ./.github/workflows/reusable-upload-package.yml
+    with:
+      registry: ghcr.io
+      smtp_address: smtp.gmail.com
+      smtp_port: 587
+      mail_to: aleksei.melinic@gmail.com
+      mail_from: aleksei.melinic@gmail.com
+      ghub_repository: amexei/angular-react-starter
+    secrets:
+      smtp_username: ${{ secrets.SMTP_USERNAME }}
+      smtp_password: ${{ secrets.SMTP_PASSWORD }}
