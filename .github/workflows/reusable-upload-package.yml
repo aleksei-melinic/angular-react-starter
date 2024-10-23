@@ -47,14 +47,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Parse Node.js version from package-lock.json
-        run: |
-          VERSION=$(jq -r '.version' package.json)
-          echo "VERSION=^$VERSION" >> $GITHUB_ENV
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.VERSION }}
+          node-version-file: angular/package.json
       - name: Install packages
         run: npm ci
       - name: Lint code
