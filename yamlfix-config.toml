@@ -1,0 +1,4 @@
+whitelines = 1
+section_whitelines = 1
+comments_whitelines = 0
+retain_line_breaks = false
