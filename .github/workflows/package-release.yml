@@ -45,22 +45,6 @@ on:
         description: Email address to send notifications from
         required: true
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
 jobs:
   build:
     runs-on: ubuntu-latest
