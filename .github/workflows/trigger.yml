@@ -8,6 +8,24 @@ on:
     branches: [master]
     types: opened
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 jobs:
   push-trigger:
     uses: ./.github/workflows/package-release.yml
