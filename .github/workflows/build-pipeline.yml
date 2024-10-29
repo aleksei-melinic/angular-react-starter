@@ -1,5 +1,5 @@
 ---
-name: CI Pipeline
+name: build-pipeline
 
 on:
   push:
@@ -10,14 +10,14 @@ on:
 
 jobs:
   push-trigger:
-    uses: ./.github/workflows/package-release.yml
+    uses: ./.github/workflows/build-workflow.yml
     with:
+      ghub_repository: amexei/angular-react-starter
       registry: ghcr.io
       smtp_address: smtp.gmail.com
       smtp_port: 587
-      ghub_repository: amexei/angular-react-starter
     secrets:
-      smtp_username: ${{ secrets.SMTP_USERNAME }}
-      smtp_password: ${{ secrets.SMTP_PASSWORD }}
-      mail_to: ${{ secrets.MAIL_TO }}
       mail_from: ${{ secrets.MAIL_FROM }}
+      mail_to: ${{ secrets.MAIL_TO }}
+      smtp_password: ${{ secrets.SMTP_PASSWORD }}
+      smtp_username: ${{ secrets.SMTP_USERNAME }}
