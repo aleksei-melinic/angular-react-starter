@@ -3,9 +3,13 @@ name: build-pipeline
 
 on:
   push:
-    branches: [ci-feature, master]
+    branches:
+      - ci-feature
+      - master
+
   pull_request:
-    branches: [master]
+    branches:
+      - master
     types: opened
 
 jobs:
