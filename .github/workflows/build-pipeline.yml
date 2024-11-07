@@ -16,6 +16,10 @@ jobs:
 
   read-secrets:
     uses: ./.github/workflows/read-secrets.yml
+    with:
+      secrets_path: ./secrets.yaml
+    secrets:
+      GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
 
   print-secrets:
     needs: read-secrets
