@@ -46,7 +46,6 @@ jobs:
     needs: get-secrets
     uses: ./.github/workflows/build-workflow.yml
     with:
-      ghub_repository: aleksei-melinic/angular-react-starter
       registry: ghcr.io
       smtp_address: smtp.gmail.com
       smtp_port: 587

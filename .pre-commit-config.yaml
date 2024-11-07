@@ -1,13 +1,11 @@
 ---
-# pre-commit run --all-files
-# https://pre-commit.com/#quick-start
-exclude: secrets.yaml
+exclude: secrets.yaml  # values have to be inside "" as per the way I am parsing them
 
 repos:
   - repo: https://github.com/petalmd/git-crypt-pre-commit
     rev: v0.1  # https://github.com/petalmd/git-crypt-pre-commit/releases/tag/v0.1
     hooks:
-      - id: git-crypt  # sudo apt install git-crypt
+      - id: git-crypt
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0  # https://github.com/pre-commit/pre-commit-hooks/releases/tag/v5.0.0
@@ -21,11 +19,13 @@ repos:
       - id: no-commit-to-branch
       - id: trailing-whitespace
 
-  - repo: https://github.com/shellcheck-py/shellcheck-py  # https://github.com/shellcheck-py/shellcheck-py
+  - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1  # https://github.com/shellcheck-py/shellcheck-py/releases/tag/v0.10.0.1
     hooks:
-      - id: shellcheck  # sudo apt install shellcheck
-        entry: shellcheck -x  # or external-sources=true
+      - id: shellcheck
+        entry: shellcheck
+        args:
+          - -x
         files: \.sh$
 
   - repo: https://github.com/adrienverge/yamllint.git
@@ -34,7 +34,7 @@ repos:
       - id: yamllint
         args:
           - -c
-          - .yamllint.toml
+          - .yamlllint
           - .github
 
   - repo: https://github.com/lyz-code/yamlfix.git
