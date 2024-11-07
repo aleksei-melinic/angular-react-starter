@@ -2,3 +2,4 @@ venv
 node/swagger.yaml
 .venv
 git-crypt-key
+tmp-key

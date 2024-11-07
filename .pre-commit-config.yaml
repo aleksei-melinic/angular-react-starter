@@ -25,19 +25,23 @@ repos:
     rev: v0.10.0.1  # https://github.com/shellcheck-py/shellcheck-py/releases/tag/v0.10.0.1
     hooks:
       - id: shellcheck  # sudo apt install shellcheck
+        entry: shellcheck -x  # or external-sources=true
+        files: \.sh$
 
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.35.1  # https://github.com/adrienverge/yamllint/releases/tag/v1.35.1
     hooks:
       - id: yamllint
-        entry: yamllint -c .yamllint.toml .github
-        stages:
-          - pre-commit
+        args:
+          - -c
+          - .yamllint.toml
+          - .github
 
   - repo: https://github.com/lyz-code/yamlfix.git
     rev: 1.17.0  # https://github.com/lyz-code/yamlfix/releases/tag/1.17.0
     hooks:
       - id: yamlfix
-        entry: yamlfix -c .yamlfix.toml .github
-        stages:
-          - pre-commit
+        args:
+          - -c
+          - .yamlfix.toml
+          - .github
