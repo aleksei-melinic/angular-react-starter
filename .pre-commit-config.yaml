@@ -4,27 +4,6 @@
 exclude: secrets.yaml
 
 repos:
-  - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.35.1  # https://github.com/adrienverge/yamllint/releases/tag/v1.35.1
-    hooks:
-      - id: yamllint
-        entry: yamllint -c config.yamllint.yaml .github
-        stages:
-          - pre-commit
-
-  - repo: https://github.com/lyz-code/yamlfix.git
-    rev: 1.17.0  # https://github.com/lyz-code/yamlfix/releases/tag/1.17.0
-    hooks:
-      - id: yamlfix
-        entry: yamlfix -c config.yamlfix.toml .github
-        stages:
-          - pre-commit
-
-  - repo: https://github.com/shellcheck-py/shellcheck-py  # https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1  # https://github.com/shellcheck-py/shellcheck-py/releases/tag/v0.10.0.1
-    hooks:
-      - id: shellcheck  # sudo apt install shellcheck
-
   - repo: https://github.com/petalmd/git-crypt-pre-commit
     rev: v0.1  # https://github.com/petalmd/git-crypt-pre-commit/releases/tag/v0.1
     hooks:
@@ -35,9 +14,30 @@ repos:
     hooks:
       - id: check-added-large-files
       - id: check-merge-conflict
-      - id: forbid-new-submodules
-      - id: no-commit-to-branch
       - id: check-symlinks
-      - id: mixed-line-ending
       - id: end-of-file-fixer
+      - id: forbid-new-submodules
+      - id: mixed-line-ending
+      - id: no-commit-to-branch
       - id: trailing-whitespace
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py  # https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1  # https://github.com/shellcheck-py/shellcheck-py/releases/tag/v0.10.0.1
+    hooks:
+      - id: shellcheck  # sudo apt install shellcheck
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.35.1  # https://github.com/adrienverge/yamllint/releases/tag/v1.35.1
+    hooks:
+      - id: yamllint
+        entry: yamllint -c .yamllint.toml .github
+        stages:
+          - pre-commit
+
+  - repo: https://github.com/lyz-code/yamlfix.git
+    rev: 1.17.0  # https://github.com/lyz-code/yamlfix/releases/tag/1.17.0
+    hooks:
+      - id: yamlfix
+        entry: yamlfix -c .yamlfix.toml .github
+        stages:
+          - pre-commit
