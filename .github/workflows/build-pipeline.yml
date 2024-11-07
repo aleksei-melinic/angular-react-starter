@@ -31,7 +31,7 @@ jobs:
   # get-secrets:
   #   name: Get secrets
   #   runs-on: ubuntu-latest
-  #   outputs:  # guide https://adamcowley.co.uk/posts/til-github-action-output-parameters/
+  #   outputs:  # guide on https://adamcowley.co.uk/posts/til-github-action-output-parameters/
   #     MAIL_FROM: ${{ steps.read_secrets.outputs.MAIL_FROM }}
   #     MAIL_TO: ${{ steps.read_secrets.outputs.MAIL_TO }}
   #     SMTP_USERNAME: ${{ steps.read_secrets.outputs.SMTP_USERNAME }}
