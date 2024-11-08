@@ -13,41 +13,44 @@ on:
     types: opened
 
 jobs:
-
-  read-secrets:
-    uses: ./.github/workflows/read-secrets.yml
-    with:
-      secrets_path: ./secrets.yaml
-    secrets:
-      git_crypt_key: ${{ secrets.GIT_CRYPT_KEY }}
-
-  set-env-secrets:
-    needs: read-secrets
+  get-secrets:
+    name: Get secrets
     runs-on: ubuntu-latest
     outputs:
-      MAIL_FROM: ${{ steps.set_env.outputs.MAIL_FROM }}
-      MAIL_TO: ${{ steps.set_env.outputs.MAIL_TO }}
-      SMTP_USERNAME: ${{ steps.set_env.outputs.SMTP_USERNAME }}
-      SMTP_PASSWORD: ${{ steps.set_env.outputs.SMTP_PASSWORD }}
+      MAIL_FROM: ${{ steps.read_secrets.outputs.MAIL_FROM }}
+      MAIL_TO: ${{ steps.read_secrets.outputs.MAIL_TO }}
+      SMTP_USERNAME: ${{ steps.read_secrets.outputs.SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ steps.read_secrets.outputs.SMTP_PASSWORD }}
     steps:
-      - name: Read environment variables with jq and define them
-        id: set_env
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.3.0  # https://github.com/sliteteam/github-action-git-crypt-unlock/releases/tag/1.3.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+
+      - name: Read and assigns variables from secrets.yaml
+        id: read_secrets
         run: |
-          json_secret='${{ needs.read-secrets.outputs.secrets }}'
-          echo "MAIL_FROM=$(echo "$json_secret" | jq -r '.MAIL_FROM')" >> $GITHUB_OUTPUT
-          echo "MAIL_TO=$(echo "$json_secret" | jq -r '.MAIL_TO')" >> $GITHUB_OUTPUT
-          echo "SMTP_USERNAME=$(echo "$json_secret" | jq -r '.SMTP_USERNAME')" >> $GITHUB_OUTPUT
-          echo "SMTP_PASSWORD=$(echo "$json_secret" | jq -r '.SMTP_PASSWORD')" >> $GITHUB_OUTPUT
+          while read KEY_VAL;
+          do
+
+              key=$(echo "$KEY_VAL" | cut -d ':' -f 1)
+              value=$(echo "$KEY_VAL" | cut -d '"' -f 2)
+              echo "$key=$value" >> "$GITHUB_OUTPUT"
+
+          done < ./secrets.yaml
 
   push-trigger:
-    needs: set-env-secrets
+    needs: get-secrets
     uses: ./.github/workflows/build-workflow.yml
     with:
       registry: ghcr.io
       smtp_address: smtp.gmail.com
       smtp_port: 587
     secrets:
-      MAIL_FROM: ${{ needs.set-env-secrets.outputs.MAIL_FROM }}
-      MAIL_TO: ${{ needs.set-env-secrets.outputs.MAIL_TO }}
-      SMTP_USERNAME: ${{ needs.set-env-secrets.outputs.SMTP_USERNAME }}
-      SMTP_PASSWORD: ${{ needs.set-env-secrets.outputs.SMTP_PASSWORD }}
+      MAIL_FROM: ${{ needs.get-secrets.outputs.MAIL_FROM }}
+      MAIL_TO: ${{ needs.get-secrets.outputs.MAIL_TO }}
+      SMTP_USERNAME: ${{ needs.get-secrets.outputs.SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ needs.get-secrets.outputs.SMTP_PASSWORD }}
