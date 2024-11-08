@@ -23,10 +23,8 @@ repos:
     rev: v0.10.0.1  # https://github.com/shellcheck-py/shellcheck-py/releases/tag/v0.10.0.1
     hooks:
       - id: shellcheck
-        entry: shellcheck
         args:
           - -x
-        files: \.sh$
 
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.35.1  # https://github.com/adrienverge/yamllint/releases/tag/v1.35.1
@@ -35,7 +33,6 @@ repos:
         args:
           - -c
           - .yamlllint
-          - .github
 
   - repo: https://github.com/lyz-code/yamlfix.git
     rev: 1.17.0  # https://github.com/lyz-code/yamlfix/releases/tag/1.17.0
@@ -44,4 +41,3 @@ repos:
         args:
           - -c
           - .yamlfix.toml
-          - .github
