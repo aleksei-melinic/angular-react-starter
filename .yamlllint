@@ -2,9 +2,10 @@
 extends: default
 
 yaml-files:
-  - '*.yaml'
-  - '*.yml'
+  - "*.yaml"
+  - "*.yml"
   - .yamllint
+  - ""
 # see rules
 # https://yamllint.readthedocs.io/en/stable/rules.html
 rules:
