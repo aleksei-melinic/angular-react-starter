@@ -1,2 +1,3 @@
-venv
-node/swagger.yaml
+.venv
+.idea
+.vscode

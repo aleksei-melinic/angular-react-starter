@@ -1,6 +1,6 @@
 ---
 services:
   web:
-    image: ghcr.io/amexei/angular-react-starter:ci-feature
+    image: ghcr.io/amexei/angular-react-starter:feature/pre-commit
     ports:
       - 8080:8080

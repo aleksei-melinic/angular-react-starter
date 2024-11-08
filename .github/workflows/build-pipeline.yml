@@ -4,8 +4,8 @@ name: build-pipeline
 on:
   push:
     branches:
-      - ci-feature
       - master
+      - feature/pre-commit
 
   pull_request:
     branches:
@@ -13,15 +13,42 @@ on:
     types: opened
 
 jobs:
-  push-trigger:
+  get-secrets:
+    name: Get secrets
+    runs-on: ubuntu-latest
+    outputs:
+      MAIL_FROM: ${{ steps.read_secrets.outputs.MAIL_FROM }}
+      MAIL_TO: ${{ steps.read_secrets.outputs.MAIL_TO }}
+      SMTP_USERNAME: ${{ steps.read_secrets.outputs.SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ steps.read_secrets.outputs.SMTP_PASSWORD }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Unlock secrets
+        uses: sliteteam/github-action-git-crypt-unlock@1.3.0  # https://github.com/sliteteam/github-action-git-crypt-unlock/releases/tag/1.3.0
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+
+      - name: Read and assigns variables from secrets.yaml
+        id: read_secrets
+        run: |
+          while read KEY_VAL;
+          do
+              key=$(echo "$KEY_VAL" | cut -d ':' -f 1)
+              value=$(echo "$KEY_VAL" | cut -d '"' -f 2)
+              echo "$key=$value" >> "$GITHUB_OUTPUT"
+          done < ./secrets.yaml
+
+  build:
+    needs: get-secrets
     uses: ./.github/workflows/build-workflow.yml
     with:
-      ghub_repository: amexei/angular-react-starter
       registry: ghcr.io
       smtp_address: smtp.gmail.com
       smtp_port: 587
     secrets:
-      mail_from: ${{ secrets.MAIL_FROM }}
-      mail_to: ${{ secrets.MAIL_TO }}
-      smtp_password: ${{ secrets.SMTP_PASSWORD }}
-      smtp_username: ${{ secrets.SMTP_USERNAME }}
+      MAIL_FROM: ${{ needs.get-secrets.outputs.MAIL_FROM }}
+      MAIL_TO: ${{ needs.get-secrets.outputs.MAIL_TO }}
+      SMTP_USERNAME: ${{ needs.get-secrets.outputs.SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ needs.get-secrets.outputs.SMTP_PASSWORD }}

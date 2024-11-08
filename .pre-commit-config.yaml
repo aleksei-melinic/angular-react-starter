@@ -1,0 +1,43 @@
+---
+exclude: secrets.yaml  # values have to be inside "" as per the way I am parsing them
+
+repos:
+  - repo: https://github.com/petalmd/git-crypt-pre-commit
+    rev: v0.1  # https://github.com/petalmd/git-crypt-pre-commit/releases/tag/v0.1
+    hooks:
+      - id: git-crypt
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0  # https://github.com/pre-commit/pre-commit-hooks/releases/tag/v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: end-of-file-fixer
+      - id: forbid-new-submodules
+      - id: mixed-line-ending
+      - id: no-commit-to-branch
+      - id: trailing-whitespace
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1  # https://github.com/shellcheck-py/shellcheck-py/releases/tag/v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args:
+          - -x
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.35.1  # https://github.com/adrienverge/yamllint/releases/tag/v1.35.1
+    hooks:
+      - id: yamllint
+        args:
+          - -c
+          - .yamlllint
+
+  - repo: https://github.com/lyz-code/yamlfix.git
+    rev: 1.17.0  # https://github.com/lyz-code/yamlfix/releases/tag/1.17.0
+    hooks:
+      - id: yamlfix
+        args:
+          - -c
+          - .yamlfix.toml
