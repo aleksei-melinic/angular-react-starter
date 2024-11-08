@@ -33,7 +33,12 @@ jobs:
       - name: Read and assigns variables from secrets.yaml
         id: read_secrets
         run: |
-          cat secrets.yaml >> "$GITHUB_OUTPUT"
+          while read KEY_VAL;
+          do
+              key=$(echo "$KEY_VAL" | cut -d ':' -f 1)
+              value=$(echo "$KEY_VAL" | cut -d '"' -f 2)
+              echo "$key=$value" >> "$GITHUB_OUTPUT"
+          done < ./secrets.yaml
 
   build:
     needs: get-secrets
